@@ -29,6 +29,8 @@ await registrar.Initialize(OnError);
 foreach(var item in await registrar.GetMyScheduleAsync())
     Console.WriteLine(item);
 
+Console.WriteLine("Yay!");
+
 void OnError(ErrorRecord err)
 {
     Console.ForegroundColor = ConsoleColor.Red;
