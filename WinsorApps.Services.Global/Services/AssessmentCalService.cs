@@ -1,3 +1,5 @@
+using WinsorApps.Services.Global.Models;
+
 namespace WinsorApps.Services.Global.Services;
 
 /// <summary>
