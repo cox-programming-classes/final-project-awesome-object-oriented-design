@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
 using WinsorApps.MAUI.Shared;
+using WinsorApps.MAUI.Shared.Pages;
 using WinsorApps.Services.Global.Services;
 
 namespace WinsorApps.MAUI.THEAssessmentCalendar;
@@ -22,6 +23,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<ApiService>();
         builder.Services.AddSingleton<RegistrarService>();
         builder.Services.AddSingleton<LocalLoggingService>();
+        
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<LoginPage>();
         
 #if DEBUG
         builder.Logging.AddDebug();
