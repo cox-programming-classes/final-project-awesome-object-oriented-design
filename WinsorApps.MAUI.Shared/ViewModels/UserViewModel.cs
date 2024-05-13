@@ -21,17 +21,24 @@ public partial class UserViewModel : ObservableObject
     public event EventHandler<UserRecord>? Selected;
     public event EventHandler<SectionRecord>? SectionSelected;
 
+    public UserViewModel()
+    {
+        _user = new("", 0, "Not", "", "Logged In", "", null, true, null);
+        displayName = "";
+        _registrar = ServiceHelper.GetService<RegistrarService>()!;
+    }
+    
     public UserViewModel(UserRecord user)
     {
         _user = user;
         displayName = $"{user.firstName} {user.lastName}";
         _registrar = ServiceHelper.GetService<RegistrarService>()!;
-        _registrar.Initialize(err => { })
-            .WhenCompleted(() =>
-            {
-                ShowButton = true;
-                DisplayName = _registrar.AllUsers.GetUniqueNameWithin(user);
-            });
+        var task = _registrar.WaitForInit(err => { });
+        task.WhenCompleted(() =>
+        {
+            ShowButton = true;
+            DisplayName = _registrar.AllUsers.GetUniqueNameWithin(user);
+        });
     }
 
 
