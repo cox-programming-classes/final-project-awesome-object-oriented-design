@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
 using WinsorApps.Services.Global.Models;
 
 namespace WinsorApps.Services.Global.Services
 {
-    public class RegistrarService
+    public class RegistrarService : IAsyncInitService
     {
         private readonly ApiService _api;
         private readonly LocalLoggingService _logging;
@@ -32,6 +27,13 @@ namespace WinsorApps.Services.Global.Services
             _sectionsByCourse = [];
         }
         
+        public async Task Refresh(ErrorAction onError)
+        {
+            Started = false;
+            Ready = false;
+            await Initialize(onError);
+        }
+
         /// <summary>
         /// Sections by Course Cache download.
         /// </summary>
@@ -392,17 +394,44 @@ namespace WinsorApps.Services.Global.Services
         /// </summary>
         public bool Ready { get; private set; } = false;
 
+        public double Progress { get; private set; } = 0;
+        
+        public bool Started { get; private set; }
+
+        public async Task WaitForInit(ErrorAction onError)
+        {
+            if (Ready) return;
+
+            if (!this.Started)
+                await this.Initialize(onError);
+
+            while (!this.Ready)
+            {
+                await Task.Delay(250);
+            }
+        }
+
         /// <summary>
         /// Initialize the Registrar Service.
         /// This should be called after a user has logged into the application.
         /// </summary>
         /// <param name="onError"></param>
-        /// <param name="forceReInit"></param>
-        public async Task Initialize(ErrorAction onError, bool forceReInit = false)
+        public async Task Initialize(ErrorAction onError)
         {
-            if (Ready && !forceReInit)
+            if (Ready)
                 return; // this has already been initalized...
 
+            if (Started)
+            {
+                _logging.LogMessage(LocalLoggingService.LogLevel.Debug, "Api Initialization called multiple times...");
+                while (!Ready)
+                {
+                    await Task.Delay(250);
+                }
+                return;
+            }
+            
+            Started = true;
             while (string.IsNullOrEmpty(_api.AuthUserId))
             {
                 Thread.Sleep(500);
@@ -414,16 +443,32 @@ namespace WinsorApps.Services.Global.Services
             {
                 SchoolYears = getSchoolYearTask.Result;
             });
+            var sbc = DownloadSectionsByCourseAsync(onError);
+            var mySched = GetMyScheduleAsync();
+            var getCourses = GetCoursesAsync();
+            var getTeachers = GetTeachersAsync();
+            var getStudents = GetStudentsAsync();
+            var getEmployees = GetEmployeesAsync();
+            var acad = GetMyAcademicScheduleAsync();
 
+            ImmutableArray<Task> tasks =
+                [getSchoolYearTask, sbc, mySched, getCourses, getTeachers, getStudents, getEmployees, acad];
+            
+            foreach(var task in tasks)
+                task.WhenCompleted(() =>
+                {
+                    Progress += 1.0 / tasks.Length;
+                });
+            
             await Task.WhenAll(
                 getSchoolYearTask,
-                DownloadSectionsByCourseAsync(onError),
-                GetMyScheduleAsync(),
-                GetCoursesAsync(),
-                GetTeachersAsync(),
-                GetStudentsAsync(),
-                GetEmployeesAsync(),
-                GetMyAcademicScheduleAsync());
+                sbc,
+                mySched,
+                getCourses,
+                getTeachers,
+                getStudents,
+                getEmployees,
+                acad);
             
             Ready = true;
 

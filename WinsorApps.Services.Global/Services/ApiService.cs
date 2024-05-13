@@ -1,22 +1,26 @@
 ﻿
 //#define API_DEBUG
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+
 using System.Net;
-using System.Runtime.InteropServices.JavaScript;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using WinsorApps.Services.Global.Models;
 
 
 namespace WinsorApps.Services.Global.Services;
 
-public class ApiService
+public class ApiService : IAsyncInitService, IAutoRefreshingService
 {
-    public event EventHandler? OnLoginSuccess;
+    public TimeSpan RefreshInterval => TimeSpan.FromMinutes(45);
+    public bool Refreshing { get; private set; }
+    public double Progress => 1;
+    public bool Started { get; private set; }
+
+public event EventHandler? OnLoginSuccess;
+
+    public bool FirstLogin = true;
     
     public string? AuthUserId => AuthorizedUser?.userId;
     public DateTime? AuthExpires => AuthorizedUser?.expires;
@@ -47,12 +51,30 @@ public class ApiService
 
     public AuthResponse? MasqueradingAdminCred { get; private set; }
 
+    public async Task Refresh(ErrorAction onError)
+    {
+        await RenewTokenAsync(onError: onError);
+    }
+
+    public async Task WaitForInit(ErrorAction onError)
+    {
+        if (Ready) return;
+
+        if (!this.Started)
+            await this.Initialize(onError);
+
+        while (!this.Ready)
+        {
+            await Task.Delay(250);
+        }
+    }
     /// <summary>
     /// Attempts to retrieve saved credentials and if possible, log in to the API.
     /// </summary>
     /// <param name="onErrorAction">If something encounters an error, what do.</param>
     public async Task Initialize(ErrorAction onError)
     {
+        Started = true;
         var savedCredential = await SavedCredential.GetSavedCredential();
         if (savedCredential is not null)
         {
@@ -93,22 +115,19 @@ public class ApiService
 
     }
 
-    public Task MaintainAuthorization(CancellationToken cancellationToken) => Task.Run(() =>
+    public async Task RefreshInBackground(CancellationToken cancellationToken, ErrorAction onError)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
+            await Task.Delay(RefreshInterval);
             if (AuthorizedUser is not null && AuthorizedUser.expires < DateTime.Now.AddMinutes(-2))
             {
-                var task = RenewTokenAsync();
-                while (!task.IsCompleted)
-                {
-                    Thread.Sleep(500);
-                }
+                Refreshing = true;
+                await RenewTokenAsync(onError: onError);
+                Refreshing = false;
             }
-
-            Thread.Sleep(TimeSpan.FromMinutes(1));
         }
-    }, cancellationToken);
+    }
 
     public async Task DropMasq()
     {
@@ -148,6 +167,7 @@ public class ApiService
                 Ready = true;
                 SavedCredential.SaveJwt(AuthorizedUser.jwt, AuthorizedUser.refreshToken);
                 OnLoginSuccess?.Invoke(this, EventArgs.Empty);
+                FirstLogin = false;
             }
         }
         catch (Exception e)
@@ -212,6 +232,11 @@ public class ApiService
                 _logging.LogMessage(LocalLoggingService.LogLevel.Information,
                     $"Login Successful:  {UserInfo.Value.email}");
                 Ready = true;
+                if(FirstLogin)
+                {
+                    OnLoginSuccess?.Invoke(this, EventArgs.Empty);
+                    FirstLogin = false;
+                }
                 SavedCredential.SaveJwt(AuthorizedUser.jwt, AuthorizedUser.refreshToken);
             }
             else
