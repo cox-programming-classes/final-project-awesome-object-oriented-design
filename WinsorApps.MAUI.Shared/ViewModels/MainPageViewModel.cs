@@ -21,7 +21,7 @@ public partial class MainPageViewModel : ObservableObject
 
     public MainPageViewModel(List<ServiceAwaiterViewModel> postLoginServices)
     {
-        userVM =new(new());
+        userVM =new();
         loginVM = new();
         loginVM.OnLogin += LoginVMOnOnLogin;
         loginVM.OnError += (sender, e) => OnError?.Invoke(sender, e);

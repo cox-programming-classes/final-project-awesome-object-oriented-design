@@ -13,11 +13,11 @@ public partial class MainPage : ContentPage
             new(registrar, "Registrar Data")
         ]);
         BindingContext = vm;
+        InitializeComponent();
 
         LoginPage loginPage = new(logging, vm.LoginVM);
         loginPage.OnLoginComplete += (_, _) => Navigation.PopAsync();
 
         Navigation.PushAsync(loginPage);
-        InitializeComponent();
     }
 }
