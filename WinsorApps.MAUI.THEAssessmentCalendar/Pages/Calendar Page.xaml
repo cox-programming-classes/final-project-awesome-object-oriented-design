@@ -2,9 +2,28 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WinsorApps.MAUI.THEAssessmentCalendar.ViewModels"
+             x:DataType="vm:CalendarViewModel"
              x:Class="WinsorApps.MAUI.THEAssessmentCalendar.Pages.Calendar_Page">
     <ContentPage.Content>
-        <VerticalStackLayout> <!-- Here's a layout to start with -->
+        <CollectionView.ItemTemplate 
+            ItemsSource="{Binding Days}" 
+            ItemsLayout="HorizontalGrid, 5">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:DayViewModel">
+                    <Label Grid.Column="2"
+                           Text="{Binding CycleDay}"
+                           FontSize="6"
+                           FontAttributes="Bold" />
+                    <Label Grid.Column="2"
+                           Text="{Binding Day}"
+                </DataTemplate> 
+            </CollectionView.ItemTemplate>
+            
+            </CollectionView>
+                
+            
+                    <VerticalStackLayout> <!-- Here's a layout to start with -->
             <!-- 
             A Grid with 6 rows and 5 columns 
             the * means things will auto size, but you can also give specific numbers 
@@ -19,7 +38,27 @@
                     Grid.Column="0"
                     Text = "Monday"
                     BackgroundColor="Brown" />
-                    
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="1"
+                    Text = "Tuesday"
+                    BackgroundColor="Brown" />
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="2"
+                    Text = "Wednesday"
+                    BackgroundColor="Brown" />
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="3"
+                    Text = "Thursday"
+                    BackgroundColor="Brown" />
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="4"
+                    Text = "Friday"
+                    BackgroundColor="Brown" />
+                <Label
             </Grid>
         </VerticalStackLayout>
     </ContentPage.Content>

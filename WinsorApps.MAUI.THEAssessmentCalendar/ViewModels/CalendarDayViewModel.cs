@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace WinsorApps.MAUI.THEAssessmentCalendar.ViewModels;
 
-public partial class CalendarDayViewModel : ObservableObject
+public partial class DayViewModel : ObservableObject
 {
     [ObservableProperty] private string cycleDay;
     [ObservableProperty] private DateTime date;
@@ -12,7 +12,7 @@ public partial class CalendarDayViewModel : ObservableObject
     /// <summary>
     /// Initialize a single Day on the Assessment Calendar
     /// </summary>
-    public CalendarDayViewModel(
+    public DayViewModel(
         string cycleDay, 
         DateTime date, 
         ImmutableArray<AssessmentsViewModel> assessments)
