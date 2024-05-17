@@ -38,3 +38,12 @@ void OnError(ErrorRecord err)
     Console.WriteLine(err.error);
     Console.ResetColor();
 }
+/// 
+AssessmentCalService acalService = new(ApiService.Current);
+await ApiService.Current.AuthenticateAsync(new("lara.dorosario@winsor.edu", "@*$VKCqrb359"));
+var assessCal = await acalService.GetAssessments();
+foreach (var assessment in assessCal)
+{
+    Console.WriteLine($"Here are your assessments: {Assessment.description} for {AssessmentRecords.Assessment.summary} at {AssessmentRecords.Assessment.start:dddd dd MMMM} at {AssessmentRecords.Assessment.:hh:mm tt}"); 
+}
+Console.WriteLine(assessCal);

@@ -20,10 +20,29 @@ public class AssessmentCalService
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
 
     }
+// get Assesments by date 
+    public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessmentsByDate(DateTime start, DateTime end)
+    {
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
+    }
+    
+    // Get Assessment info
+    public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessmentInfo(string type, string summary,
+        string description)
+    {
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get,
+            $"api/assessment-calendar/my-calendar");
+    }
+    
+    // Use late pass command 
 
-    //public async Task<ImmutableArray<Assessment>> GetAssessments(string id, string type, string summary,
-    //string description, DateTime start, DateTime end, bool allDay, List<string> affectedClasses);
-    //{
-   //     return await _api.SendAsync<>()
-  //  }
+    public async Task<ImmutableArray<AssessmentRecords.LatePass>> PostLatePass(bool latepassused,
+        bool latepassavailable)
+    {
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Post,
+            $"api/assessment-calendar/students/passes");
+    }
+        
+    // Withdraw late pass - what http method would I use here? (delete?)
+    
 }
