@@ -2,6 +2,12 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WinsorApps.MAUI.THEAssessmentCalendar.ViewModels"
+             x:DataType="vm:AssessmentsViewModel"
              x:Class="WinsorApps.MAUI.THEAssessmentCalendar.Views.AssessmentView">
-    
+    <ContentView.Content>
+        <VerticalStackLayout>
+            
+        </VerticalStackLayout>
+    </ContentView.Content>
 </ContentView>

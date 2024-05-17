@@ -4,6 +4,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WinsorApps.MAUI.THEAssessmentCalendar.Pages.Calendar_Page">
     <ContentPage.Content>
-        
+        <VerticalStackLayout> <!-- Here's a layout to start with -->
+            <!-- 
+            A Grid with 6 rows and 5 columns 
+            the * means things will auto size, but you can also give specific numbers 
+            for the Height of Rows, and Width of Columns 
+            -->
+            <Grid
+                RowDefinitions="*,*,*,*,*,*" 
+                ColumnDefinitions="*,*,*,*" >
+                <!-- Here's how to add an element to a Grid Cell -->
+                <Label 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text = "Monday"
+                    BackgroundColor="Brown" />
+                    
+            </Grid>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
