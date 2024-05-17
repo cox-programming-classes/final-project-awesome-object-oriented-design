@@ -14,7 +14,7 @@ await api.Initialize(OnError);
 int retryCount = 0;
 while (!api.Ready && retryCount < 10)
 {
-    await api.Login("jcox@winsor.edu", "!-8L49snDyYvcNJe29a.p!N4ka3wf", OnError);
+    await api.Login("jcox@winsor.edu", "not my password", OnError);
     if (!api.Ready)
         retryCount++;
 }
@@ -38,12 +38,13 @@ void OnError(ErrorRecord err)
     Console.WriteLine(err.error);
     Console.ResetColor();
 }
-/// 
-AssessmentCalService acalService = new(ApiService.Current);
-await ApiService.Current.AuthenticateAsync(new("lara.dorosario@winsor.edu", "@*$VKCqrb359"));
+
+AssessmentCalService acalService = new(api);
 var assessCal = await acalService.GetAssessments();
 foreach (var assessment in assessCal)
 {
-    Console.WriteLine($"Here are your assessments: {Assessment.description} for {AssessmentRecords.Assessment.summary} at {AssessmentRecords.Assessment.start:dddd dd MMMM} at {AssessmentRecords.Assessment.:hh:mm tt}"); 
+    Console.WriteLine($"Here are your assessments: {assessment.description} " +
+                      $"for {assessment.summary} at {assessment.start:dddd dd MMMM} " +
+                      $"until {assessment.end:hh:mm tt}"); 
 }
 Console.WriteLine(assessCal);
