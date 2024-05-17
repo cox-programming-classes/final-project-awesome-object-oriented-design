@@ -20,7 +20,7 @@ public class AssessmentCalService
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
 
     }
-// get Assesments by date 
+// get Assessments by date 
     public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessmentsByDate(DateTime start, DateTime end)
     {
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
@@ -36,11 +36,10 @@ public class AssessmentCalService
     
     // Use late pass command 
 
-    public async Task<ImmutableArray<AssessmentRecords.LatePass>> PostLatePass(bool latepassused,
-        bool latepassavailable)
+    public async Task<ImmutableArray<AssessmentRecords.LatePass>> PostLatePass(bool? passUsed, bool? passAvailable)
     {
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Post,
-            $"api/assessment-calendar/students/passes");
+            $"api/assessment-calendar/students/passes?showPast=true");
     }
         
     // Withdraw late pass - what http method would I use here? (delete?)
