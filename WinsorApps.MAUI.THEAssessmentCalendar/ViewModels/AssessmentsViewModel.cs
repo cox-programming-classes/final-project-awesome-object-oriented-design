@@ -19,13 +19,15 @@ public partial class AssessmentsViewModel : ObservableObject
     /// lets you do stuff with the assessment
     /// </summary>
     private readonly AssessmentCalService _calendarService;
-    
+
     [ObservableProperty] private DateTime start;
     [ObservableProperty] private DateTime end;
     [ObservableProperty] private string summary;
     [ObservableProperty] private string description;
+    [ObservableProperty] private bool passavailable;
+    [ObservableProperty] private bool passused;
 
-    /// <summary>
+/// <summary>
     /// Turn a Model into a ViewModel!
     /// </summary>
     /// <param name="assessment">the Assessment Model that you are handed.</param>
@@ -34,14 +36,21 @@ public partial class AssessmentsViewModel : ObservableObject
     {
         _assessment = assessment;
         _calendarService = service;
+        
 
         //  Initialize all of your ObservableProperties here~
-
+        start = assessment.start;
+        end = assessment.end;
+        summary = assessment.summary;
+        description = assessment.description;
+        
+        assessment.
     }
 
     [RelayCommand]
     public async Task RequestLatePass()
     {
         // use the _calendarService to request a LatePass for THIS assessment.
+        await _calendarService.PostLatePass(_assessment.id);
     }
 }
