@@ -1,3 +1,6 @@
+using System.Collections.Immutable;
+using WinsorApps.Services.Global.Models;
+
 namespace WinsorApps.Services.Global.Services;
 
 /// <summary>
@@ -12,9 +15,9 @@ public class AssessmentCalService
         _api = api;
     }
 
-    public async Task<ImmutableArray<Assessment>> GetAssessments(bool detailed = false)
+    public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessments(bool detailed = false)
     {
-        return await _api.SendAsync<ImmutableArray<Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
 
     }
 
