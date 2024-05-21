@@ -12,14 +12,30 @@
             ItemsLayout="HorizontalGrid, 5">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:DayViewModel">
-                    <HorizontalStackLayout>
+                    <VerticalStackLayout>
                         <Label 
                            Text="{Binding CycleDay}"
                            FontSize="6"
                            FontAttributes="Bold" />
                         <Label 
-                            Text="{Binding Day}" />
-                    </HorizontalStackLayout>
+                            Text="{Binding Date}" />
+                        <CollectionView
+                            ItemsSource="{Binding Assessments}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate
+                                    x:DataType="vm:AssessmentsViewModel">
+                                    <HorizontalStackLayout>
+                                        <Label
+                                            Text="{Binding Start}" >
+                                        </Label>
+                                        <Label
+                                            Text="{Binding Description}" >
+                                        </Label>
+                                       </HorizontalStackLayout>     
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>  
+                        </CollectionView>
+                    </VerticalStackLayout>
                 </DataTemplate> 
             </CollectionView.ItemTemplate>
             
