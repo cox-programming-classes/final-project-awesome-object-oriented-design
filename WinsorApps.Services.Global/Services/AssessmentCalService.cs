@@ -20,7 +20,7 @@ public class AssessmentCalService : IAsyncInitService
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
 
     }
-// get Assesments by date 
+// get Assessments by date 
     public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessmentsByDate(DateTime start, DateTime end)
     {
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
@@ -34,14 +34,59 @@ public class AssessmentCalService : IAsyncInitService
             $"api/assessment-calendar/my-calendar");
     }
     
-    // Use late pass command 
+    /// <summary>
+    /// My Assessments Cache.
+    /// </summary>
+    private ImmutableArray<AssessmentRecords.Assessment> _myAssessments;
+    
+    /// <summary>
+    /// Access My Assessments cache.
+    /// </summary>
+    public ImmutableArray<AssessmentRecords.Assessment> MyAssessments => _myAssessments;
 
-    public async Task<ImmutableArray<AssessmentRecords.LatePass>> PostLatePass(bool latepassused,
-        bool latepassavailable)
+    public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessmentsAsync()
     {
-        return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Post,
-            $"api/assessment-calendar/students/passes");
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, "api/assessment-calendar/my-calendar");
     }
+
+    public async Task GetAssessmentsAsync(ImmutableArray<AssessmentRecords.Assessment> _myAssessments)
+    {
+        this._myAssessments = await GetAssessmentsAsync();
+    }
+    /// <summary>
+    /// My Late Pass Cache. 
+    /// </summary>
+    private ImmutableArray<AssessmentRecords.LatePass> _myLatePasses;
+
+    /// <summary>
+    /// Access My Late Passes cache. 
+    /// </summary>
+
+    public ImmutableArray<AssessmentRecords.LatePass> MyLatePasses => _myLatePasses;
+
+    public async Task<ImmutableArray<AssessmentRecords.LatePass>> GetLatePassesAsync()
+    {
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Get,
+            "api/assessment-calendar/students/passes?showPast=true");
+    }
+    public async Task WithdrawLatePassesAsync(ImmutableArray<AssessmentRecords.LatePass> _myLatePasses)
+    {
+        this._myLatePasses = await GetLatePassesAsync();
+    }
+    
+    /// <summary>
+    /// Use Late Pass
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<ImmutableArray<AssessmentRecords.LatePass>> PostLatePass(string id)
+    {
+        // this endpoint only returns a single late pass~
+        // get that in the 
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Post,
+            $"api/assessment-calendar/students/passes{id}");
+    }
+    
         
     // Withdraw late pass - what http method would I use here? (delete?)
 
@@ -60,6 +105,9 @@ public class AssessmentCalService : IAsyncInitService
         // Initialize your cache here~
         // await any api calls that you want
         // to populate in memory.
+       
+        _myAssessments = await GetAssessmentsAsync();
+        _myLatePasses = await GetLatePassesAsync();
 
         Progress = 1;
         Ready = true;
