@@ -36,8 +36,8 @@ foreach (var assessment in assessCal)
 Console.WriteLine(assessCal);
 
 // Calling the assessment calendar service for getting assessments "by date"
-var byDate = await acalService.GetAssessmentsByDate();
-foreach (var assessment in assessCal)
+var assessmentsByDate= await acalService.GetAssessmentsByDate();
+foreach (var assessment in assessmentsByDate)
 {
     Console.WriteLine($"Assessments by date: from {assessment.start} to {assessment.end}");
 }
@@ -59,8 +59,8 @@ void OnError(ErrorRecord err)
     Console.ResetColor();
 }
 
-AssessmentCalService acalService = new(api);
-var assessCal = await acalService.GetAssessments();
+//AssessmentCalService acalService = new(api);
+//var assessCal = await acalService.GetAssessments();
 foreach (var assessment in assessCal)
 {
     Console.WriteLine($"Here are your assessments: {assessment.description} " +

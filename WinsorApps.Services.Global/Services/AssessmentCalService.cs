@@ -69,13 +69,22 @@ public class AssessmentCalService : IAsyncInitService
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Get,
             "api/assessment-calendar/students/passes?showPast=true");
     }
-    public async Task GetLatePassesAsync(ImmutableArray)
+    public async Task WithdrawLatePassesAsync(ImmutableArray<AssessmentRecords.LatePass> _myLatePasses)
+    {
+        this._myLatePasses = await GetLatePassesAsync();
+    }
     
-    // Use late pass command 
+    /// <summary>
+    /// Use Late Pass
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<ImmutableArray<AssessmentRecords.LatePass>> PostLatePass(string id)
     {
+        // this endpoint only returns a single late pass~
+        // get that in the 
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Post,
-            $"api/assessment-calendar/students/passes/{id}");
+            $"api/assessment-calendar/students/passes{id}");
     }
     
         
@@ -98,6 +107,7 @@ public class AssessmentCalService : IAsyncInitService
         // to populate in memory.
        
         _myAssessments = await GetAssessmentsAsync();
+        _myLatePasses = await GetLatePassesAsync();
 
         Progress = 1;
         Ready = true;
