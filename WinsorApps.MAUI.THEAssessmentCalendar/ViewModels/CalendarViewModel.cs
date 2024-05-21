@@ -23,11 +23,23 @@ public partial class CalendarViewModel : ObservableObject
         var start = new DateTime(day.Year, day.Month, 1);
         var end = start.AddMonths(1).AddDays(-1);
         var task = calendar.GetAssessmentsByDate(start, end);
+        
+        
         task.WhenCompleted(() =>
         {
             var assessments = task.Result;
             // initialize Days with all the ViewModels in this list that
             // should be displayed in the view.
+            var ViewModels = assessments.Select(a => new AssessmentsViewModel(a));
+            List<DayViewModel> temp = new();
+            var Dates = assessments.Select(a => a.Start.Date).Distinct();
+            foreach (var date in Dates)
+            {
+                
+                temp.Add(new DayViewModel("", date, ViewModels.Where(a => a.Start.Date == date)));
+            }
+
+            Days = temp;
         });
     }
 
