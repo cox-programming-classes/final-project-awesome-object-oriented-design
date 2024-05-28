@@ -2,7 +2,9 @@ using System.Collections.Immutable;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using WinsorApps.MAUI.Shared;
 using WinsorApps.Services.Global;
+using WinsorApps.Services.Global.Models;
 using WinsorApps.Services.Global.Services;
 
 namespace WinsorApps.MAUI.THEAssessmentCalendar.ViewModels;
@@ -22,24 +24,23 @@ public partial class CalendarViewModel : ObservableObject
         day = DateTime.Today;
         var start = new DateTime(day.Year, day.Month, 1);
         var end = start.AddMonths(1).AddDays(-1);
-        var task = calendar.GetAssessmentsByDate(start, end);
+        Task <ImmutableArray<AssessmentRecords.Assessment>> task = calendar.GetAssessmentsByDate(start, end);
         
         
-        task.WhenCompleted(() =>
+        task.WhenCompleted<ImmutableArray<AssessmentRecords.Assessment>>(() =>
         {
             var assessments = task.Result;
             // initialize Days with all the ViewModels in this list that
             // should be displayed in the view.
-            var ViewModels = assessments.Select(a => new AssessmentsViewModel(a));
+            var ViewModels = assessments.Select(a => new AssessmentsViewModel(a, _calendar));
             List<DayViewModel> temp = new();
-            var Dates = assessments.Select(a => a.Start.Date).Distinct();
+            var Dates = assessments.Select(a => a.start.Date).Distinct();
             foreach (var date in Dates)
             {
-                
-                temp.Add(new DayViewModel("", date, ViewModels.Where(a => a.Start.Date == date)));
+                temp.Add(new DayViewModel("", date, ViewModels.Where(a => a.Start.Date == date).ToImmutableArray()));
             }
 
-            Days = temp;
+            Days = temp.ToImmutableArray();
         });
     }
 
