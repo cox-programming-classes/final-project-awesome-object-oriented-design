@@ -23,7 +23,8 @@ public class AssessmentCalService : IAsyncInitService
 // get Assessments by date 
     public async Task<ImmutableArray<AssessmentRecords.Assessment>> GetAssessmentsByDate(DateTime start, DateTime end)
     {
-        return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, $"api/assessment-calendar/my-calendar");
+        return await _api.SendAsync<ImmutableArray<AssessmentRecords.Assessment>>(HttpMethod.Get, 
+            $"api/assessment-calendar/my-calendar?start={start:yyyy-MM-dd}&end={end:yyyy-MM-dd}");
     }
     
     // Get Assessment info
