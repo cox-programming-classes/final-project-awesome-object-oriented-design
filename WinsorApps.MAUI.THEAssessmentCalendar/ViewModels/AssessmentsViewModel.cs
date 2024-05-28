@@ -8,6 +8,7 @@ namespace WinsorApps.MAUI.THEAssessmentCalendar.ViewModels;
 
 public partial class AssessmentsViewModel : ObservableObject
 {
+    public AssessmentsViewModel Self => this;
     /// <summary>
     /// this is the Assessment Model that you will create
     /// the ViewModel around
@@ -26,6 +27,8 @@ public partial class AssessmentsViewModel : ObservableObject
     [ObservableProperty] private string description;
     [ObservableProperty] private bool passavailable;
     [ObservableProperty] private bool passused;
+    [ObservableProperty] private string type;
+    [ObservableProperty] private bool allDay; 
 
 /// <summary>
     /// Turn a Model into a ViewModel!
@@ -44,7 +47,13 @@ public partial class AssessmentsViewModel : ObservableObject
         summary = assessment.summary;
         description = assessment.description;
         
-        assessment.
+        // use these to initialize additional observable properties~
+        
+        type = assessment.type;
+        allDay = assessment.allDay;
+        passavailable = assessment.passAvailable ?? false;
+        passused = assessment.passUsed ?? false;
+        
     }
 
     [RelayCommand]
@@ -52,5 +61,11 @@ public partial class AssessmentsViewModel : ObservableObject
     {
         // use the _calendarService to request a LatePass for THIS assessment.
         await _calendarService.PostLatePass(_assessment.id);
+        
+    }
+
+    public async Task WithdrawLatePass()
+    {
+        await _calendarService.WithdrawLatePassesAsync(_assessment.id);
     }
 }

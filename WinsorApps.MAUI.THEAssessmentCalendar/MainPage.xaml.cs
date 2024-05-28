@@ -6,11 +6,13 @@ namespace WinsorApps.MAUI.THEAssessmentCalendar;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage(RegistrarService registrar, ApiService api, LocalLoggingService logging)
+    public MainPage(RegistrarService registrar, ApiService api, LocalLoggingService logging, AssessmentCalService calendar)
+    
     {
         MainPageViewModel vm = new(
         [
-            new(registrar, "Registrar Data")
+           // new(registrar, "Registrar Data"),  
+            new ServiceAwaiterViewModel(calendar,"AssessmentCalendar")
         ]);
         BindingContext = vm;
         InitializeComponent();

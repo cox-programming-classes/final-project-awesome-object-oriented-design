@@ -2,14 +2,20 @@
 <Shell
     x:Class="WinsorApps.MAUI.THEAssessmentCalendar.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:pages="clr-namespace:WinsorApps.MAUI.THEAssessmentCalendar.Pages"
     xmlns:local="clr-namespace:WinsorApps.MAUI.THEAssessmentCalendar"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="WinsorApps.MAUI.THEAssessmentCalendar">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+    
+    <ShellContent
+        Title="Test"
+        ContentTemplate="{DataTemplate pages:assessmenttest}"
+        Route="assessmenttest" />
 
 </Shell>
