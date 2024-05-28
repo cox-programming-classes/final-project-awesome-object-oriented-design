@@ -8,6 +8,7 @@ namespace WinsorApps.MAUI.THEAssessmentCalendar.ViewModels;
 
 public partial class AssessmentsViewModel : ObservableObject
 {
+    public AssessmentsViewModel Self => this;
     /// <summary>
     /// this is the Assessment Model that you will create
     /// the ViewModel around
@@ -19,13 +20,17 @@ public partial class AssessmentsViewModel : ObservableObject
     /// lets you do stuff with the assessment
     /// </summary>
     private readonly AssessmentCalService _calendarService;
-    
+
     [ObservableProperty] private DateTime start;
     [ObservableProperty] private DateTime end;
     [ObservableProperty] private string summary;
     [ObservableProperty] private string description;
+    [ObservableProperty] private bool passavailable;
+    [ObservableProperty] private bool passused;
+    [ObservableProperty] private string type;
+    [ObservableProperty] private bool allDay; 
 
-    /// <summary>
+/// <summary>
     /// Turn a Model into a ViewModel!
     /// </summary>
     /// <param name="assessment">the Assessment Model that you are handed.</param>
@@ -34,14 +39,33 @@ public partial class AssessmentsViewModel : ObservableObject
     {
         _assessment = assessment;
         _calendarService = service;
+        
 
         //  Initialize all of your ObservableProperties here~
-
+        start = assessment.start;
+        end = assessment.end;
+        summary = assessment.summary;
+        description = assessment.description;
+        
+        // use these to initialize additional observable properties~
+        
+        type = assessment.type;
+        allDay = assessment.allDay;
+        passavailable = assessment.passAvailable ?? false;
+        passused = assessment.passUsed ?? false;
+        
     }
 
     [RelayCommand]
     public async Task RequestLatePass()
     {
         // use the _calendarService to request a LatePass for THIS assessment.
+        await _calendarService.PostLatePass(_assessment.id);
+        
+    }
+
+    public async Task WithdrawLatePass()
+    {
+        await _calendarService.WithdrawLatePassesAsync(_assessment.id);
     }
 }

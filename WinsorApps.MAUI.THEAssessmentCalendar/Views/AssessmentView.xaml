@@ -7,6 +7,17 @@
              x:Class="WinsorApps.MAUI.THEAssessmentCalendar.Views.AssessmentView">
     <ContentView.Content>
         <VerticalStackLayout>
+            <Label
+                Text="{Binding Summary}"/>
+            <Button
+                Text=" Use Late Pass"
+                Command= "{Binding  RequestLatePassCommand}"
+                IsVisible="{Binding Passavailable}"/> 
+            <Button
+                Text=" Undo Late Pass"
+                Command= "{Binding  RequestLatePassCommand}"
+                IsVisible="{Binding Passused}"/> 
+            
             
         </VerticalStackLayout>
     </ContentView.Content>
