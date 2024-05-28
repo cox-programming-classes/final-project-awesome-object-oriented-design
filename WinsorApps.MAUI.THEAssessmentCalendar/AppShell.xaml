@@ -17,5 +17,9 @@
         Title="Test"
         ContentTemplate="{DataTemplate pages:assessmenttest}"
         Route="assessmenttest" />
+    <ShellContent
+        Title="Calendar"
+        ContentTemplate="{DataTemplate pages:Calendar_Page}"
+        Route="Calendar_Page" />
 
 </Shell>
