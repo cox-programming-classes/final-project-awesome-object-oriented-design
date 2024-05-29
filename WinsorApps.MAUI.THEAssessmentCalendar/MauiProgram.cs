@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
 using WinsorApps.MAUI.Shared;
 using WinsorApps.MAUI.Shared.Pages;
+using WinsorApps.MAUI.THEAssessmentCalendar.ViewModels;
 using WinsorApps.Services.Global;
 using WinsorApps.Services.Global.Services;
 
@@ -28,6 +29,8 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<LoginPage>();
+        builder.Services.AddSingleton<AssessmentCalService>();
+        builder.Services.AddSingleton<AssessmentCollectionViewModel>(); 
         
 #if DEBUG
         builder.Logging.AddDebug();

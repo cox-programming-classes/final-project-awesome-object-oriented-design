@@ -70,9 +70,9 @@ public class AssessmentCalService : IAsyncInitService
         return await _api.SendAsync<ImmutableArray<AssessmentRecords.LatePass>>(HttpMethod.Get,
             "api/assessment-calendar/students/passes?showPast=true");
     }
-    public async Task WithdrawLatePassesAsync(ImmutableArray<AssessmentRecords.LatePass> _myLatePasses)
+    public async Task WithdrawLatePassesAsync(string id)
     {
-        this._myLatePasses = await GetLatePassesAsync();
+        //this._myLatePasses = await GetLatePassesAsync();
     }
     
     /// <summary>
