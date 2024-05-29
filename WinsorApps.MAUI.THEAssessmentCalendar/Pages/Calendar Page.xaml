@@ -2,9 +2,46 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WinsorApps.MAUI.THEAssessmentCalendar.ViewModels"
+             x:DataType="vm:CalendarViewModel"
              x:Class="WinsorApps.MAUI.THEAssessmentCalendar.Pages.Calendar_Page">
     <ContentPage.Content>
-        <VerticalStackLayout> <!-- Here's a layout to start with -->
+        <VerticalStackLayout>
+        <CollectionView
+            ItemsSource="{Binding Days}" 
+            ItemsLayout="HorizontalGrid, 5">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:DayViewModel">
+                    <VerticalStackLayout>
+                        <Label 
+                           Text="{Binding CycleDay}"
+                           FontSize="6"
+                           FontAttributes="Bold" />
+                        <Label 
+                            Text="{Binding Date}" />
+                        <CollectionView
+                            ItemsSource="{Binding Assessments}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate
+                                    x:DataType="vm:AssessmentsViewModel">
+                                    <HorizontalStackLayout>
+                                        <Label
+                                            Text="{Binding Start}" >
+                                        </Label>
+                                        <Label
+                                            Text="{Binding Description}" >
+                                        </Label>
+                                       </HorizontalStackLayout>     
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>  
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </DataTemplate> 
+            </CollectionView.ItemTemplate>
+            
+            </CollectionView>
+                
+             <!-- Here's a layout to start with -->
             <!-- 
             A Grid with 6 rows and 5 columns 
             the * means things will auto size, but you can also give specific numbers 
@@ -19,7 +56,27 @@
                     Grid.Column="0"
                     Text = "Monday"
                     BackgroundColor="Brown" />
-                    
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="1"
+                    Text = "Tuesday"
+                    BackgroundColor="Brown" />
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="2"
+                    Text = "Wednesday"
+                    BackgroundColor="Brown" />
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="3"
+                    Text = "Thursday"
+                    BackgroundColor="Brown" />
+                <Label
+                    Grid.Row="O"
+                    Grid.Column="4"
+                    Text = "Friday"
+                    BackgroundColor="Brown" />
+                
             </Grid>
         </VerticalStackLayout>
     </ContentPage.Content>
