@@ -11,14 +11,15 @@ using WinsorApps.Services.Global.Models;
 
 namespace WinsorApps.Services.Global.Services;
 
-public class ApiService : IAsyncInitService, IAutoRefreshingService
+public class ApiService : IAsyncInitService, IAutoRefreshingCacheService
 {
     public TimeSpan RefreshInterval => TimeSpan.FromMinutes(45);
     public bool Refreshing { get; private set; }
     public double Progress => 1;
     public bool Started { get; private set; }
 
-public event EventHandler? OnLoginSuccess;
+    public event EventHandler? OnLoginSuccess;
+    public event EventHandler? OnCacheRefreshed;
 
     public bool FirstLogin = true;
     
@@ -54,6 +55,7 @@ public event EventHandler? OnLoginSuccess;
     public async Task Refresh(ErrorAction onError)
     {
         await RenewTokenAsync(onError: onError);
+        OnCacheRefreshed?.Invoke(this, EventArgs.Empty);
     }
 
     public async Task WaitForInit(ErrorAction onError)

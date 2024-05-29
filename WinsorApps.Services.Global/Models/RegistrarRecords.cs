@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WinsorApps.Services.Global.Services;
 
 namespace WinsorApps.Services.Global.Models;
@@ -199,7 +194,7 @@ public static partial class Extensions
             name = $"{user.firstName} {name}";
         }
 
-        Debug.WriteLine($"Found unique name {name}");
+        //Debug.WriteLine($"Found unique name {name}");
         return name;
     }
 
