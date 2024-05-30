@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AssessmentCalendarApp.ViewModels"
+             xmlns:view= "clr-namespace:AssessmentCalendarApp.Views"
+             x:DataType="vm:AssessmentCollectionViewModel"
+             x:Class="AssessmentCalendarApp.Pages.assessmenttest">
+    
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <CollectionView
+                ItemsSource="{Binding Assessments}" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AssessmentsViewModel">
+                        <view:AssessmentView
+                            BindingContext="{Binding Self}"
+                            ></view:AssessmentView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

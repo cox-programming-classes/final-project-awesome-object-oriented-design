@@ -8,6 +8,7 @@
              x:Class="WinsorApps.MAUI.THEAssessmentCalendar.Pages.assessmenttest">
     
     <ContentPage.Content>
+        <ScrollView>
         <VerticalStackLayout>
             <CollectionView
                 ItemsSource="{Binding Assessments}" >
@@ -20,5 +21,6 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
