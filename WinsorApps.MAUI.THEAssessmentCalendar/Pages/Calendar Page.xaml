@@ -57,22 +57,22 @@
                     Text = "Monday"
                     BackgroundColor="Brown" />
                 <Label
-                    Grid.Row="O"
+                    Grid.Row="0"
                     Grid.Column="1"
                     Text = "Tuesday"
                     BackgroundColor="Brown" />
                 <Label
-                    Grid.Row="O"
+                    Grid.Row="0"
                     Grid.Column="2"
                     Text = "Wednesday"
                     BackgroundColor="Brown" />
                 <Label
-                    Grid.Row="O"
+                    Grid.Row="0"
                     Grid.Column="3"
                     Text = "Thursday"
                     BackgroundColor="Brown" />
                 <Label
-                    Grid.Row="O"
+                    Grid.Row="0"
                     Grid.Column="4"
                     Text = "Friday"
                     BackgroundColor="Brown" />

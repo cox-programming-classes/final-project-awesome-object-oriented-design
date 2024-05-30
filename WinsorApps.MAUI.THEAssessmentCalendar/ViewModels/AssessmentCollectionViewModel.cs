@@ -9,7 +9,7 @@ namespace WinsorApps.MAUI.THEAssessmentCalendar.ViewModels;
 
 public partial class AssessmentCollectionViewModel : ObservableObject
 {
-    [ObservableProperty] private ImmutableArray<AssessmentsViewModel> assessments;
+    [ObservableProperty] private ImmutableArray<AssessmentsViewModel> assessments = [];
     public event EventHandler<ErrorRecord>? OnError;
 
     public AssessmentCollectionViewModel(AssessmentCalService calendar)
